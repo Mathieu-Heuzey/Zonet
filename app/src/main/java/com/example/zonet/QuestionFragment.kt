@@ -13,7 +13,6 @@ import com.google.android.material.button.MaterialButton
 class QuestionFragment(private val questionModel: QuestionModel) : Fragment() {
 
     private var binding: QuestionFragmentBinding? = null
-    private val btnList = mutableListOf<MaterialButton>()
     private lateinit var viewModel: QuestionFragmentViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -24,16 +23,39 @@ class QuestionFragment(private val questionModel: QuestionModel) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setQuestionInfo()
         val binding = binding ?: return
 
+        val btnList = mutableListOf<MaterialButton>()
         btnList.apply {
             add(binding.first)
             add(binding.second)
             add(binding.third)
             add(binding.fourth)
         }
+
         viewModel = QuestionFragmentViewModel(btnList, questionModel)
+        viewModel.getState().observe(viewLifecycleOwner) {
+            if (it) {
+                responseFound()
+            } else
+                responseNotFound()
+        }
+        setQuestionInfo()
+    }
+
+    private fun responseFound() {
+        val binding = binding ?: return
+        binding.validationAnimation.apply {
+            visibility = View.VISIBLE
+            playAnimation()
+        }
+    }
+
+    private fun responseNotFound() {
+        val binding = binding ?: return
+        binding.validationAnimation.apply {
+            visibility = View.GONE
+        }
     }
 
     private fun setQuestionInfo() {
