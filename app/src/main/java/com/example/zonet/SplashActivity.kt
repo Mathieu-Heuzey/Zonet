@@ -32,7 +32,10 @@ class SplashActivity : AppCompatActivity() {
                         setAnimatorOnView(view)
                     }
                     else {
-                        val intent = Intent(applicationContext, MainActivity::class.java)
+                        val intent = Intent(applicationContext, MainActivity::class.java).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        }
+
                         startActivity(intent)
                     }
                 }

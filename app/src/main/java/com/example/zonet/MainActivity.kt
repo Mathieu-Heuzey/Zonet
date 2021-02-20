@@ -2,6 +2,7 @@ package com.example.zonet
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.zonet.databinding.MainActivityBinding
@@ -21,9 +22,9 @@ class MainActivity : AppCompatActivity() {
 
         binding = MainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val text = resources.openRawResource(R.raw.quizz)
-            .bufferedReader().use { it.readText() }
-        Gson().fromJson(text, QuestionList::class.java)
+        binding.play.setOnClickListener {
+            val intent = Intent(applicationContext, QuizzActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
