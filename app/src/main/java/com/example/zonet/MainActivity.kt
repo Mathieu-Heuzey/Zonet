@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         binding = MainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.play.setOnClickListener {
+        binding.btnPlay.setOnClickListener {
             val intent = Intent(applicationContext, QuizActivity::class.java)
             startActivity(intent)
         }

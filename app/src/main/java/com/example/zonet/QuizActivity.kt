@@ -5,16 +5,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.zonet.databinding.QuizzActivityBinding
+import com.example.zonet.databinding.QuizActivityBinding
 
 class QuizActivity : AppCompatActivity() {
 
-    private lateinit var binding: QuizzActivityBinding
+    private lateinit var binding: QuizActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = QuizzActivityBinding.inflate(layoutInflater)
+        binding = QuizActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val questionsList = QuizAPI().getQuestionList(this)
@@ -38,6 +38,6 @@ class QuizActivity : AppCompatActivity() {
 
         override fun getItemCount(): Int = questionsList.size
 
-        override fun createFragment(position: Int): Fragment = QuestionFragment()
+        override fun createFragment(position: Int): Fragment = QuestionFragment(questionsList[position])
     }
 }

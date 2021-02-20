@@ -6,12 +6,10 @@ class QuestionModel(
     @SerializedName("titre") val titre: String,
     @SerializedName("image") val image: String,
     @SerializedName("question") val question: String,
-    @SerializedName("good") val goodAnswer: String,
-    @SerializedName("bad") val badAnswer: BadAnswer
+    @SerializedName("answer") val answer: Array<Choice>
 )
 
-class BadAnswer(
-    @SerializedName("1") val first: String,
-    @SerializedName("2") val second: String,
-    @SerializedName("3") val third: String
+class Choice(
+    @SerializedName("title") val answer: String,
+    @SerializedName("isGood") val good: Boolean,
 )
