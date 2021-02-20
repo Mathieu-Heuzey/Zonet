@@ -18,7 +18,15 @@ class SplashActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val listOfView = mutableListOf<View>(binding.z, binding.o, binding.n, binding.e, binding.t)
-        setAnimatorOnView(listOfView)
+        if (DEV) {
+            val intent = Intent(applicationContext, MainActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+
+            startActivity(intent)
+        } else {
+            setAnimatorOnView(listOfView)
+        }
     }
 
     private fun setAnimatorOnView(view: MutableList<View>) {
@@ -27,11 +35,10 @@ class SplashActivity : AppCompatActivity() {
             addListener(object : Animator.AnimatorListener {
                 override fun onAnimationStart(animation: Animator?) {}
                 override fun onAnimationEnd(animation: Animator?) {
-                    if (view.size > 1 ) {
+                    if (view.size > 1) {
                         view.removeAt(0)
                         setAnimatorOnView(view)
-                    }
-                    else {
+                    } else {
                         val intent = Intent(applicationContext, MainActivity::class.java).apply {
                             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                         }

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Zonet</string>
+    <string name="main_activity_btn_jouer">Jouer</string>
+    <string name="main_activity_btn_score">Score</string>
 </resources>

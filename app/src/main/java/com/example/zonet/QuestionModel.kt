@@ -2,8 +2,6 @@ package com.example.zonet
 
 import com.google.gson.annotations.SerializedName
 
-class QuestionList(val list: List<QuestionModel>)
-
 class QuestionModel(
     @SerializedName("titre") val titre: String,
     @SerializedName("image") val image: String,

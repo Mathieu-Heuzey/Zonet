@@ -5,18 +5,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
 import com.example.zonet.databinding.QuizzActivityBinding
 
-class QuizzActivity : AppCompatActivity() {
+class QuizActivity : AppCompatActivity() {
+
     private lateinit var binding: QuizzActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = QuizzActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val question2 = QuizzAPI.create(this).getQuestion2(this)
-        val pagerAdapter = QuestionSlidePagerAdapter(this)
+
+        val questionsList = QuizAPI().getQuestionList(this)
+        val pagerAdapter = QuestionSlidePagerAdapter(this, questionsList)
+
         binding.pager.adapter = pagerAdapter
     }
 
@@ -24,12 +27,16 @@ class QuizzActivity : AppCompatActivity() {
         if (binding.pager.currentItem == 0) {
             super.onBackPressed()
         } else {
-            // Otherwise, select the previous step.
             binding.pager.currentItem = binding.pager.currentItem - 1
         }
     }
-    private inner class QuestionSlidePagerAdapter(fa : FragmentActivity): FragmentStateAdapter(fa) {
-        override fun getItemCount(): Int = 10
+
+    private inner class QuestionSlidePagerAdapter(
+        fragment: FragmentActivity,
+        private val questionsList: Array<QuestionModel>
+    ) : FragmentStateAdapter(fragment) {
+
+        override fun getItemCount(): Int = questionsList.size
 
         override fun createFragment(position: Int): Fragment = QuestionFragment()
     }
