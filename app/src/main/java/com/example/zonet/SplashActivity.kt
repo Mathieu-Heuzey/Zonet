@@ -1,9 +1,10 @@
 package com.example.zonet
 
+import android.animation.Animator
+import android.animation.AnimatorInflater
 import android.content.Intent
 import android.os.Bundle
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.zonet.databinding.SplashActivityBinding
 
@@ -12,22 +13,34 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = SplashActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val anim = AnimationUtils.loadAnimation(this, R.anim.bounce_splash_screen)
-        anim.startOffset = 1000
-        anim.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) {}
 
-            override fun onAnimationEnd(animation: Animation?) {
-                val intent = Intent(applicationContext, MainActivity::class.java)
-                startActivity(intent)
-            }
+        val listOfView = mutableListOf<View>(binding.z, binding.o, binding.n, binding.e, binding.t)
+        setAnimatorOnView(listOfView)
+    }
 
-            override fun onAnimationRepeat(animation: Animation?) {}
+    private fun setAnimatorOnView(view: MutableList<View>) {
+        AnimatorInflater.loadAnimator(this, R.animator.splash_screen_fade_animation).apply {
+            setTarget(view.first())
+            addListener(object : Animator.AnimatorListener {
+                override fun onAnimationStart(animation: Animator?) {}
+                override fun onAnimationEnd(animation: Animator?) {
+                    if (view.size > 1 ) {
+                        view.removeAt(0)
+                        setAnimatorOnView(view)
+                    }
+                    else {
+                        val intent = Intent(applicationContext, MainActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
 
-        })
-        binding.icon.startAnimation(anim)
-        binding.appName.startAnimation(anim)
+                override fun onAnimationCancel(animation: Animator?) {}
+                override fun onAnimationRepeat(animation: Animator?) {}
+            })
+            start()
+        }
     }
 }
