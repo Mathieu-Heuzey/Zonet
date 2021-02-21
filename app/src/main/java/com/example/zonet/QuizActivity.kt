@@ -21,6 +21,12 @@ class QuizActivity : AppCompatActivity() {
         val pagerAdapter = QuestionSlidePagerAdapter(this, questionsList)
 
         binding.pager.adapter = pagerAdapter
+        binding.pager.isUserInputEnabled = false
+    }
+
+    private fun onNextClicked() {
+        binding.pager.currentItem
+        binding.pager.setCurrentItem(binding.pager.currentItem +1, true)
     }
 
     override fun onBackPressed() {
@@ -38,6 +44,8 @@ class QuizActivity : AppCompatActivity() {
 
         override fun getItemCount(): Int = questionsList.size
 
-        override fun createFragment(position: Int): Fragment = QuestionFragment(questionsList[position])
+        override fun createFragment(position: Int): Fragment = QuestionFragment(
+            questionsList[position]
+        ) { onNextClicked() }
     }
 }

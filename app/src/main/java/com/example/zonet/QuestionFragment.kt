@@ -7,13 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.example.zonet.answer.BadAnswer
 import com.example.zonet.databinding.QuestionFragmentBinding
 import com.google.android.material.button.MaterialButton
 
-class QuestionFragment(private val questionModel: QuestionModel) : Fragment() {
+class QuestionFragment(private val questionModel: QuestionModel, private val onNextClicked: () -> Unit) : Fragment() {
 
     private var binding: QuestionFragmentBinding? = null
     private lateinit var viewModel: QuestionFragmentViewModel
+    val btnList = mutableListOf<MaterialButton>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = QuestionFragmentBinding.inflate(layoutInflater)
@@ -24,8 +26,7 @@ class QuestionFragment(private val questionModel: QuestionModel) : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = binding ?: return
-
-        val btnList = mutableListOf<MaterialButton>()
+        binding.btnNext.setOnClickListener { onNextClicked.invoke() }
         btnList.apply {
             add(binding.first)
             add(binding.second)
@@ -45,10 +46,16 @@ class QuestionFragment(private val questionModel: QuestionModel) : Fragment() {
 
     private fun responseFound() {
         val binding = binding ?: return
+        viewModel.answers.forEach {
+            if (it is BadAnswer) {
+                it.btn.isEnabled = false
+            }
+        }
         binding.validationAnimation.apply {
             visibility = View.VISIBLE
             playAnimation()
         }
+        binding.btnNext.isEnabled = true
     }
 
     private fun responseNotFound() {

@@ -9,7 +9,7 @@ import com.google.android.material.button.MaterialButton
 
 class QuestionFragmentViewModel(btnList: MutableList<MaterialButton>, questionModel: QuestionModel) : ViewModel() {
 
-    private val answers = mutableListOf<Answer>()
+    val answers = mutableListOf<Answer>()
     private val isAnswerFound = MutableLiveData<Boolean>()
 
     fun getState() : MutableLiveData<Boolean> = isAnswerFound

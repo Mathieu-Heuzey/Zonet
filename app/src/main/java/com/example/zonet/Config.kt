@@ -1,3 +1,3 @@
 package com.example.zonet
 
-const val DEV = false
+const val DEV = true
